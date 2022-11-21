@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include<stdlib.h>
 #define size 3
@@ -34,7 +33,10 @@ void delete(){
     }
 }
 void display(){
-    for(int i=front;i<=rear;i++){
+    if(rear==-1||front==size)
+    printf("\nQueue is empty");
+    for(int i=0;i<=rear;i++)
+    {
         printf("%d\t",queue[i]);
     }
 }
