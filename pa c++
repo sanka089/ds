@@ -1,0 +1,63 @@
+#include <iostream>
+#include<string.h>
+#include <stack>
+int top=-1;
+int st[20];
+void push(char val){
+    top++;
+    st[top] = val;
+}
+char pop(){
+    return st[top--];
+}
+using namespace std;
+
+int main()
+{
+     stack<char> st;
+    char s[20];
+    int i,flag=0,len;
+    char temp;
+    printf("enter a string");
+    scanf("%s",s);
+    len = strlen(s);
+    for(i=0;i<len;i++){
+        if(s[i]=='(' || s[i]=='[' || s[i]=='{'){ 
+            push(s[i]);
+        }
+        // else if(s[0]==')' || s[0]=='}' || s[0]==']'){
+        //     flag=0;
+        //     break;
+        // }
+        else{
+            // if(len==1){
+            //     flag=0;
+            //     break;
+            // }
+            if(st.empty()){
+                flag=0;
+            }
+            temp = pop();
+            if(temp == '(' && s[i]==')'){
+                flag=1;
+            }
+            else if(temp == '{' && s[i]=='}'){
+                flag=1;
+            }
+            else if(temp == '[' && s[i]==']'){
+                flag=1;
+            }
+            // else{
+            //     flag=0;
+            // }
+        }
+    }
+     if(flag==1){
+        cout<<"true";
+    }
+    else {
+        cout<<"flase";
+    }
+
+    return 0;
+}
