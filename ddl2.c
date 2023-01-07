@@ -1,142 +1,132 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
 
-#include <stdio.h>
-#include <stdlib.h>
+void create();
+void display();
+void insert_head();
+void delete_val();
+/*void insert_last();
+void insert_val();
+void delete_head();
+void delete_last();
+*/
 
-
-struct node {
-    int info;
-    struct node *prev, *next;
-};
-struct node* start = NULL;
-
-void traverse()
-{
-
-    if (start == NULL) {
-        printf("\nList is empty\n");
-        return;
-    }
-
-    struct node* temp;
-    temp = start;
-    while (temp != NULL) {
-        printf(" %d ", temp->info);
-        temp = temp->next;
-    }
-}
-
-
-void insert()
+struct Node
 {
     int data;
-    struct node* temp;
-    temp = (struct node*)malloc(sizeof(struct node));
-    printf("\nEnter number to be inserted: ");
-    scanf("%d", &data);
-    temp->info = data;
-    temp->prev = NULL;
+    struct Node *link;
+    struct Node *prev;
+};
+typedef struct Node node;
+node *start=NULL;
 
-
-    temp->next = start;
-    start = temp;
-}
-
-void deleteFirst()
+void main()
 {
-    struct node* temp;
-    if (start == NULL)
-        printf("\nList is empty\n");
-    else {
-        temp = start;
-        start = start->next;
-        if (start != NULL)
-            start->prev = NULL;
-        free(temp);
-    }
-}
-
-
-
-
-
-
-
-
-
-void deletePosition()
-{
-    int pos, i = 1;
-    struct node *temp, *position;
-    temp = start;
-
-
-    if (start == NULL)
-        printf("\nList is empty\n");
-
-
-    else {
-
-        printf("\nEnter position : ");
-        scanf("%d", &pos);
-
-        if (pos == 1) {
-            deleteFirst();
-            if (start != NULL) {
-                start->prev = NULL;
-            }
-            free(position);
-            return;
-        }
-
-
-        while (i < pos - 1) {
-            temp = temp->next;
-            i++;
-        }
-
-        position = temp->next;
-        if (position->next != NULL)
-            position->next->prev = temp;
-        temp->next = position->next;
-
-
-        free(position);
-    }
-}
-
-
-int main()
-{
-    int choice;
-    while (1) {
-
-        printf("\n\t1 Display\n");
-        printf("\t2 For insertion at left \n");
-        printf("\t3 For deletion of element at any position\n");
-        printf("\t4 To exit\n");
-        printf("\nEnter Choice :\n");
-        scanf("%d", &choice);
-
-        switch (choice) {
+    int ch;
+    while(1)
+    {
+        printf("\n1.Create\n2.Display \n3.Insert Head \n4.Delete val\n5.Exit");
+        printf("\nEnter your choice:\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
         case 1:
-            traverse();
+            create();
             break;
         case 2:
-            insert();
+            display();
             break;
         case 3:
-            deletePosition();
+            insert_head();
             break;
-
         case 4:
-            exit(1);
+            delete_val();
             break;
+        case 5:
+            exit(1);
+
         default:
-            printf("Incorrect Choice. Try Again \n");
-            continue;
+            printf("Invalid choice\n");
         }
     }
-    return 0;
 }
 
+void create()
+{
+    int c;
+    node *new,*curr,*ptr;
+    start=(node *) malloc(sizeof(node));
+    curr=start;
+    printf("Enter element\n");
+    scanf("%d",&start->data);
+    while(1)
+    {
+        printf("Do you want to add another element(1/0)\n");
+        scanf("%d",&c);
+        if(c==1)
+        {
+            new=(node *) malloc(sizeof(node));
+            curr->link = new;
+            new->prev = curr;
+            printf("Enter element\n");
+            scanf("%d",&new->data);
+            curr=new;
+        }
+        else
+        {
+            curr->link=NULL;
+            break;
+        }
+    }
+}
+void display()
+{
+    node *temp;
+    if(start==NULL)
+    {
+        printf("Linked list is empty\n");
+        return;
+    }
+    temp=start;
+    while(temp!=NULL)
+    {
+        printf("%d\t",temp->data);
+        temp = temp->link;
+    }
+}
+void insert_head(){
+    node *temp,*mew;
+    mew = (node *) malloc(sizeof(node));
+    temp = start;
+    printf("enter element value");
+    scanf("%d",&mew->data);
+    if(start==NULL){
 
+        mew->link = NULL;
+        mew->prev = NULL;
+        start = mew;
+    }
+    else{
+        mew->link = start;
+        mew->prev = NULL;
+        start=mew;
+    }
+}
+void delete_val(){
+    int val;
+    node *ptr,*prevptr;
+    prevptr = start;
+    ptr = start;
+    printf("enter value to be deleted");
+    scanf("%d",&val);
+    while(ptr->data!=val){
+        prevptr = ptr;
+        ptr = ptr->link;
+    }
+    prevptr->link = ptr->link;
+    ptr->link->prev = prevptr;
+    printf("\n%d",ptr->data);
+    free(ptr);
+
+}
